@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import database from './config/database';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -6,6 +6,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { AppController } from './app/app.controller';
 import { GetInformationUsecase } from './domain/usecases/get-information-usecase';
+import { ActorModule } from '../actors/actor.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { GetInformationUsecase } from './domain/usecases/get-information-usecase
         return addTransactionalDataSource(new DataSource(option));
       },
     }),
+    forwardRef(() => ActorModule),
   ],
 
   controllers: [AppController],
